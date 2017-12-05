@@ -1,0 +1,176 @@
+<div class="container">
+  <div class="form">
+    <h1>Registration</h1>
+    <div *ngIf="rUser">
+      <p>Thank you for registering with us {{rUser.fName}}. We just sent you a confirmation email at {{rUser.email}}, and we will
+        send all mail to {{rUser.address +" "+ rUser.unit +" "+ rUser.city +" "+ rUser.state}}.</p>
+      <p>Have a wonderful day!</p>
+    </div>
+
+    <h3>Account Information</h3>
+    <form #registration="ngForm" (submit)="onSubmit(registration)">
+      <div class="form-group ">
+        <label for="fName">First Name</label>
+        <input type="text" class="form-control form-control-sm" name="fName" placeholder="Enter first name" required minlength="2"
+          maxlength="24" pattern="^[^0-9^!@#$%^&*_]+$" [(ngModel)]="user.fName" #fName="ngModel"> {{ fName.valid | json}}
+      </div>
+      <div *ngIf="fName.touched && fName.invalid">
+        <p class="text-danger" *ngIf="fName.errors.required">First name is required</p>
+        <p class="text-danger" *ngIf="fName.errors.minlength || fName.errors.maxlength">First name must be between 2-24 characters</p>
+        <p class="text-danger" *ngIf="fName.errors.pattern">First name cannot contain numbers or special characters (except hyphen)</p>
+      </div>
+
+
+      <div class="form-group">
+        <label for="lName">Last Name</label>
+        <input type="text" class="form-control form-control-sm" name="lName" placeholder="Enter last name" required minlength="2"
+          maxlength="24" pattern="^[^0-9^!@#$%^&*_]+$" [(ngModel)]="user.lName" #lName='ngModel'>
+      </div>
+      {{ lName.valid | json}}
+      <div *ngIf="lName.touched && lName.invalid">
+        <p class="text-danger" *ngIf="lName.errors.required">Last name is required</p>
+        <p class="text-danger" *ngIf="lName.errors.minlength || lName.errors.maxlength">Last name must be between 2-24 characters</p>
+        <p class="text-danger" *ngIf="lName.errors.pattern">Last name cannot contain numbers or special characters (except hyphen)</p>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control form-control-sm" name="email" placeholder="Enter email" required pattern="^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$"
+          [(ngModel)]="user.email" #email='ngModel'>
+      </div>
+      {{ email.valid | json}}
+      <div *ngIf="email.touched && email.invalid">
+        <p class="text-danger" *ngIf="email.errors.required">Email is required</p>
+        <p class="text-danger" *ngIf="email.errors.pattern">Invalid email</p>
+      </div>
+
+      <div class="form-group">
+        <label for="pwd">Password</label>
+        <input type="password" class="form-control form-control-sm" name="pwd" aria-describedby="pwdHelp" placeholder="Enter password"
+          required minlength="8" maxlength="15" pattern="^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=-_.]).*$" [(ngModel)]="user.pwd" #pwd="ngModel">
+        <small id="pwdHelp" class="form-text text-muted">Passwords must be 8-15 characters with at least one Uppercase character, one Lowercase character, one number, and
+          a special character</small>
+      </div>
+      {{ pwd.valid | json}}
+      <div *ngIf="pwd.touched && pwd.invalid">
+        <p class="text-danger" *ngIf="pwd.errors.required">Password is required</p>
+        <p class="text-danger" *ngIf="pwd.errors.pattern">Invalid password</p>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" class="form-control form-control-sm" name="confirm" placeholder="Confirm password" required [(ngModel)]="user.confirm" #confirm="ngModel">
+      </div>
+      {{ confirm.valid | json}}
+      <div *ngIf="confirm.touched || user.confirm != user.pwd">
+          <!-- <p class="text-danger" *ngIf="confirm.errors.required">Password confirmation is required</p> -->
+          <p class="text-danger" *ngIf="user.confirm != user.pwd">Password confirmation does not match password</p>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Street address</label>
+        <input type="text" class="form-control form-control-sm" name="address" placeholder="Enter street address" required [(ngModel)]="user.address" #address='ngModel'>
+      </div>
+      {{ address.valid | json}}
+      <div *ngIf="address.touched && address.invalid">
+          <p class="text-danger" *ngIf="address.errors.required">Street address is required</p>
+      </div>
+
+      <div class="form-group">
+        <label for="unit">Unit/Apt #</label>
+        <input type="text" class="form-control form-control-sm" name="unit" placeholder="Enter unit or apt#" minlength="1" [(ngModel)]="user.unit" #unit='ngModel'>
+      </div>
+      {{ unit.valid | json}}
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" class="form-control form-control-sm" name="city" placeholder="Enter city" required minlength="3" pattern="^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$"[(ngModel)]="user.city" #city='ngModel'>
+      </div>
+      {{ city.valid | json}}
+      <div *ngIf="city.touched && city.invalid">
+          <p class="text-danger" *ngIf="city.errors.required">City is required</p>
+          <p class="text-danger" *ngIf="city.errors.pattern || city.errors.minlength">Invalid City</p>
+      </div>
+ 
+      <div class="form-group">
+        <label for="state">State</label>
+        <select class="form-control form-control-sm" name="state" required [(ngModel)]="user.state" #state="ngModel">
+          <option value="Alabama">AL</option>
+          <option value="Alaska">AK</option>
+          <option value="Arizona">AZ</option>
+          <option value="Arkansas">AR</option>
+          <option value="California">CA</option>
+          <option value="Colorado">CO</option>
+          <option value="Conneticut">CT</option>
+          <option value="Deleware">DE</option>
+          <option value="Florida">FL</option>
+          <option value="Georgia">GA</option>
+          <option value="Hawaii">HI</option>
+          <option value="Idaho">ID</option>
+          <option value="Illinois">IL</option>
+          <option value="Indiana">IN</option>
+          <option value="Iowa">IA</option>
+          <option value="Kansas">KS</option>
+          <option value="Kentucky">KY</option>
+          <option value="Louisiana">LA</option>
+          <option value="Maine">ME</option>
+          <option value="Maryland">MD</option>
+          <option value="Massachusetts">MA</option>
+          <option value="Michigan">MI</option>
+          <option value="Minnesota">MN</option>
+          <option value="Mississippi">MS</option>
+          <option value="Missouri">MO</option>
+          <option value="Montana">NT</option>
+          <option value="Nebraska">NE</option>
+          <option value="Nevada">NV</option>
+          <option value="New Hampshire">NH</option>
+          <option value="New Jersey">NJ</option>
+          <option value="New Mexico">NM</option>
+          <option value="New York">NY</option>
+          <option value="North Carolina">NC</option>
+          <option value="North Dakota">ND</option>
+          <option value="OHIO">OH</option>
+          <option value="Oklahoma">OK</option>
+          <option value="Oregon">OR</option>
+          <option value="Pennsylvania">PA</option>
+          <option value="Rhode Island">RI</option>
+          <option value="South Carolina">SC</option>
+          <option value="South Dakota">SD</option>
+          <option value="Tennesee">TN</option>
+          <option value="Texas">TX</option>
+          <option value="Utah">UT</option>
+          <option value="Vermont">VT</option>
+          <option value="Virginia">VA</option>
+          <option value="Washington">WA</option>
+          <option value="West Virginia">WV</option>
+          <option value="Wisonsin">WI</option>
+          <option value="Wyoming">WY</option>
+        </select>
+      </div>
+      {{ state.valid | json}}
+      <div *ngIf="state.touched && state.invalid">
+          <p class="text-danger" *ngIf="state.errors.required">State is required</p>
+      </div>
+
+      <div class="form-group">
+        <label for="lucky">I'm feeling lucky </label>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="lucky" id="inlineRadio1" value="No" required [(ngModel)]="user.lucky" #lucky="ngModel"> No
+          </label>
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="lucky" id="inlineRadio2" value="Yes" required [(ngModel)]="user.lucky" #lucky="ngModel"> Yes
+          </label>
+        </div>
+      </div>
+      {{ lucky.valid | json}}
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button [disabled]="!registration.form.valid" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div> 
+
+    </form>
+  </div>
+</div>
